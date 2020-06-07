@@ -1,4 +1,6 @@
-let matrix; 
+let currentFrame;
+let intermediateFrame; //For holding the neighbour count
+let nextFrame; 
 let spanMouseX = document.getElementById('mouse-x'); 
 let spanMouseY = document.getElementById('mouse-y');
 let canvas = document.getElementById('canvas');
@@ -18,11 +20,11 @@ function handleMouseClick(event){
     let point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom);
     if(point){
         let point2 = calcCellCoordinates(point.x , point.y);
-        if(matrix[point2.y][point2.x] === 0){
-            matrix[point2.y][point2.x] = 1;
+        if(currentFrame[point2.y][point2.x] === 0){
+            currentFrame[point2.y][point2.x] = 1;
         }
         else{
-            matrix[point2.y][point2.x] = 0;
+            currentFrame[point2.y][point2.x] = 0;
         }
         draw();
         spanMouseX.innerHTML = 'Column ' + point2.x;
@@ -60,9 +62,9 @@ function calcClickCoordinates(mouseX, mouseY, canvasLeft, canvasTop, canvasRight
     }
 }
 function draw(){
-    for (let i = 0; i < matrix.length; i++){
-        for (let j = 0; j < matrix[0].length; j++){
-            if(matrix[i][j] === 1){
+    for (let i = 0; i < currentFrame.length; i++){
+        for (let j = 0; j < currentFrame[0].length; j++){
+            if(currentFrame[i][j] === 1){
                 context.fillStyle = 'black';
                 context.fillRect(j*cellSize + 1, i*cellSize + 1, cellSize - 2, cellSize - 2);
             }
@@ -75,110 +77,152 @@ function draw(){
 }
 function simulate(){
     console.log('INITIALIZE');
-    for (let i = 0; i < matrix.length; i++){
-        for (let j = 0; j < matrix[0].length; j++){
-        
-            let reindexJ = j;
-            let reindexI = i;
+    for (let i = 0; i < currentFrame.length; i++){
+        for (let j = 0; j < currentFrame[0].length; j++){
+            
+            let jOffset;
+            let iOffset;
+    
+            //Right Neighbour
+            jOffset = j + 1;
+            iOffset = i;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let rightNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexJ = reindexJ + 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let rightNeighbourCount = matrix[reindexI][reindexJ];
-            reindexJ = reindexJ - 1;
+            //Left Neighbour
+            jOffset = j - 1;
+            iOffset = i;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let leftNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexJ = reindexJ - 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let leftNeighbourCount = matrix[reindexI][reindexJ];
-            reindexJ = reindexJ + 1;
+            //Bottom Neighbour
+            jOffset = j;
+            iOffset = i + 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let bottomNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexI = reindexI + 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let bottomNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI - 1;
+            //Bottom Right Neighbour
+            jOffset = j + 1;
+            iOffset = i + 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let bottomRightNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexI = reindexI + 1;
-            reindexJ = reindexJ + 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let bottomRightNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI - 1;
-            reindexJ = reindexJ - 1
+            //Bottom Left Neighbour
+            jOffset = j - 1;
+            iOffset = i + 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let bottomLeftNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexI = reindexI + 1;
-            reindexJ = reindexJ - 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let bottomLeftNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI - 1;
-            reindexJ = reindexJ + 1;
+            //Top Neighbour
+            jOffset = j;
+            iOffset = i - 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let topNeighbourCount = currentFrame[iOffset][jOffset];
+            
 
-            reindexI = reindexI - 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let topNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI + 1
+            //Top Left Neighbour
+            jOffset = j - 1;
+            iOffset = i - 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let topLeftNeighbourCount = currentFrame[iOffset][jOffset];
 
-           
-            reindexI = reindexI - 1;
-            reindexJ = reindexJ - 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let topLeftNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI + 1;
-            reindexJ = reindexJ + 1;
+            //Top Right Neighbour
+            jOffset = j + 1;
+            iOffset = i - 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
+            let topRightNeighbourCount = currentFrame[iOffset][jOffset];
 
-            reindexI = reindexI - 1;
-            reindexJ = reindexJ + 1;
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
-            let topRightNeighbourCount = matrix[reindexI][reindexJ];
-            reindexI = reindexI + 1;
-            reindexJ = reindexJ - 1;
+            iOffset = reindex(iOffset);
+            jOffset = reindex(jOffset);
 
-            reindexI = reindex(reindexI);
-            reindexJ = reindex(reindexJ);
+            let totalNeighbourCount = topNeighbourCount
+                + topRightNeighbourCount
+                + rightNeighbourCount
+                + bottomRightNeighbourCount
+                + bottomNeighbourCount
+                + bottomLeftNeighbourCount
+                + leftNeighbourCount
+                + topLeftNeighbourCount; 
 
-            let totalNeighbourCount = (rightNeighbourCount + leftNeighbourCount) + (bottomNeighbourCount + bottomRightNeighbourCount) + (bottomLeftNeighbourCount) + (topNeighbourCount + topRightNeighbourCount) + (topLeftNeighbourCount);
+            intermediateFrame[i][j] = totalNeighbourCount;
             //console.log('Cell ' + i + j + ' Has ' +totalNeighbourCount + ' total neighbours neighbours' + rightNeighbourCount + ' RIGHT NEIGHBOURS ' + leftNeighbourCount + ' LEFT NEIGHBOURS ' + topNeighbourCount + ' TOP NEIGHBOURS ' + topRightNeighbourCount + ' TOP RIGHT NEIGHBOURS ' + topLeftNeighbourCount + ' TOP LEFT NEIGHBOURS ' + bottomNeighbourCount + ' BOTTOM NEIGHBOURS ' + bottomRightNeighbourCount + ' BOTTOM RIGHT NEIGHBOURS ' + bottomLeftNeighbourCount + ' BOTTOM LEFT NEIGHBOURS ');
-            cellId = {i: i, j: j, neighbours: totalNeighbourCount };
-            status = drawSimulate(cellId);
         }            
     }
-    console.log(cellId.status);
-    for (let i = 0; i < matrix.length; i++){
-        for (let j = 0; j < matrix[0].length; j++){
-            if(cellId.status === 1){
-                console.log('WOOO');
-                matrix[i][j] = 1; 
-            }
-            else{
-                console.log('DEAD')
-                matrix[i][j] = 0;
-            }
+   
+    for (let i = 0; i < intermediateFrame.length; i++){
+        for (let j = 0; j < intermediateFrame[0].length; j++){
+            nextFrame[i][j] = calcNewCellState(currentFrame[i][j], intermediateFrame[i][j]);
         }
     }
-    draw();        
+    console.table(currentFrame);
+    console.table(intermediateFrame);
+    console.table(nextFrame);
+    //currentFrame = nextFrame;
+    //draw();        
 }
-function drawSimulate(cellId){
-    if(cellId.neighbours === 3){
-        cellId.status = 1;
-        console.log('CELL ' + cellId.i + cellId.j + ' IS ' +  status + ' WITH ' + cellId.neighbours + ' NEIGHBOURS'); 
+function calcNewCellState(currentState, neighbours){
+    let newState;
+    if(neighbours === 3){
+        newState = 1; //Born
     }
-    if(cellId.neighbours === 2  && matrix[cellId.i][cellId.j] === 1){
-        cellId.status = 1;
-        console.log('CELL ' + cellId.i + cellId.j + ' IS ' + status + ' WITH ' + cellId.neighbours + ' NEIGHBOURS');
+    if(neighbours === 2  && currentState === 1){
+        newState = 1; //Survive
     }
     else {
-        cellId.status = 0;
+        newState = 0; //Die
+    }
+    return newState;
+}
+
+function testCalcNewCellStateIsBorn(){
+    let result = calcNewCellState(0, 3);
+    if(result === 1){
+        console.log('PASS');
+    }
+    else{
+        console.error('FAILED');
     }
 }
+
+function testCalcNewCellStateSurvive(){
+    let result = calcNewCellState(1, 2);
+    if(result === 1){
+        console.log('PASS');
+    }
+    else{
+        console.error('FAILED');
+    }
+}
+
+function testCalcNewCellStateDie(){
+    let result = calcNewCellState(1, 0);
+    if(result === 0){
+        console.log('PASS');
+    }
+    else{
+        console.error('FAILED');
+    }
+}
+
+function runTests(){
+    testCalcNewCellStateIsBorn();
+    testCalcNewCellStateSurvive();
+    testCalcNewCellStateDie();
+}  
+
+
 function reindex(num){
     if(num === -1){
         //num = matrix.length - 1;
-        indexNum = matrix.length - 1;
+        indexNum = currentFrame.length - 1;
         return indexNum;
     }
     if(num === 0){
@@ -190,11 +234,11 @@ function reindex(num){
         indexNum = 8;
         return indexNum;
     }
-    if (num < matrix.length && num != -2 && num != 0){
+    if (num < currentFrame.length && num != -2 && num != 0){
         indexNum = num;
         return indexNum;
     }
-    if(num >= matrix.length){
+    if(num >= currentFrame.length){
         //num = 0;
         indexNum = 0;
         return indexNum;
@@ -230,7 +274,9 @@ function getInputValue() {
     canvas.width = w;
     const arrH = h / cellSize;
     const arrW = w / cellSize;
-    matrix = makeMatrix(arrH, arrW);
+    currentFrame = makeMatrix(arrH, arrW);
+    nextFrame = makeMatrix(arrH, arrW);
+    intermediateFrame = makeMatrix(arrH, arrW);
     drawBoard(w, h);
 }
 function drawBoard(w, h){
