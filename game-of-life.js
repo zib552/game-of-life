@@ -162,18 +162,20 @@ function simulate(){
             nextFrame[i][j] = calcNewCellState(currentFrame[i][j], intermediateFrame[i][j]);
         }
     }
-    console.table(currentFrame);
-    console.table(intermediateFrame);
-    console.table(nextFrame);
-    //currentFrame = nextFrame;
-    //draw();        
+    //console.table(currentFrame);
+    //console.table(intermediateFrame);
+    //console.table(nextFrame);
+
+    currentFrame = nextFrame;
+    draw();        
 }
 function calcNewCellState(currentState, neighbours){
     let newState;
+    console.log(neighbours);
     if(neighbours === 3){
-        newState = 1; //Born
+        newState = 1;
     }
-    if(neighbours === 2  && currentState === 1){
+    else if(neighbours === 2  && currentState === 1){
         newState = 1; //Survive
     }
     else {
@@ -255,7 +257,7 @@ function makeMatrix(rows, cols){
             matrix[i].push(0);
         }
     }
-    console.table(matrix);
+    //console.table(matrix);
     return matrix;
 }
 
