@@ -1,0 +1,39 @@
+.presetsBtn {
+    background-color: #e1e1e1;
+    color: black;
+    padding: 1px 3px;
+    font-size: 13px;
+    border:  #adadad;
+    border-width: 1px;
+    border-style: solid
+}    
+.presets {
+    position: relative;
+    display: inline-block;
+}
+.presets-content{
+    background-color: #e1e1e1;
+    border: #adadad;
+    border-style: solid;
+    border-width: 1px;
+}
+.preset1{
+    position: relative;
+    display: block;
+    width: 50px;
+    height: 10px;
+    padding-top: 5px;
+    border: #adadad;
+    background-color: #e1e1e1;
+    border-style: solid;
+    border-width: 1px;
+    border-top: none;
+    text-align: center;
+}
+
+.presetsBtn:hover {background-color: #e5f1fb; border-color: #0078d7;}
+.presets-content:focus .preset1{display: block;}
+.preset1:hover {background-color: #e5f1fb; border-color: #0078d7;}
+.preset2:hover {background-color: #e5f1fb; border-color: #0078d7;}
+
+  

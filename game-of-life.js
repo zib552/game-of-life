@@ -8,6 +8,7 @@ let context = canvas.getContext("2d");
 const cellSize = 10;
 let body = document.getElementById('body').addEventListener('click', handleMouseClick);
 let status;
+let value = 0;
 
 window.addEventListener('DOMContentLoaded', init);
 
@@ -294,4 +295,79 @@ function drawBoard(w, h){
         context.lineTo(w,  x );
     }
     context.stroke();
-}          
+}   
+
+function getPreset(){
+    let select = document.getElementById('select');
+    value  = select.options[select.selectedIndex].value;
+    console.log(value);
+}
+function drawPreset(){
+    console.log('INIT');
+    numValue = parseInt(value);
+    console.log(numValue);
+    if (numValue === 1 && currentFrame.length >= 17 && currentFrame[16][16] != undefined ){
+        clear();
+        currentFrame[8][7] = 1;
+        currentFrame[8][8] = 1;
+        currentFrame[8][9] = 1;
+        currentFrame[9][8] = 1;
+        currentFrame[9][7] = 1;
+        currentFrame[9][6] = 1;
+        draw();
+    }
+    if (numValue === 2 && currentFrame.length >= 17 && currentFrame[16][16] != undefined){
+        clear();
+        currentFrame[7][8] = 1;
+        currentFrame[8][9] = 1;
+        currentFrame[8][10] = 1;
+        currentFrame[8][11] = 1;
+        currentFrame[8][6] = 1;
+        currentFrame[8][5] = 1;
+        currentFrame[6][6] = 1;
+        draw();
+    }
+    if (numValue === 3 && currentFrame.length >= 17 && currentFrame[16][16] != undefined){
+        clear();
+        currentFrame[7][9] = 1;
+        currentFrame[7][6] = 1;
+        currentFrame[8][10] = 1;
+        currentFrame[9][10] = 1;
+        currentFrame[9][6] = 1;
+        currentFrame[10][7] = 1;
+        currentFrame[10][8] = 1;
+        currentFrame[10][9] = 1;
+        currentFrame[10][10] = 1;
+        draw();
+    }
+
+    if (currentFrame === undefined){
+        alert('you must draw a grid')
+    }
+    else if (numValue === 0){
+        alert('You must select a preset');
+    }
+    else if (currentFrame.length < 17){
+        alert('Grid is too small. The minimum size is 17x17');
+    }    
+}
+function clear(){
+    for (let i = 0; i < currentFrame.length; i++){
+        for (let j = 0; j < currentFrame[0].length; j++){
+            currentFrame[i][j] = 0;
+        }
+    }
+    for (let i = 0; i < intermediateFrame.length; i++){
+        for (let j = 0; j < intermediateFrame[0].length; j++){
+            intermediateFrame[i][j] = 0;
+        }
+    }
+    for (let i = 0; i < nextFrame.length; i++){
+        for (let j = 0; j < nextFrame[0].length; j++){
+            nextFrame[i][j] = 0;
+        }
+    }
+}
+
+
+

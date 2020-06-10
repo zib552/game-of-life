@@ -3,6 +3,7 @@
  <head>
      <meta charset="UTF-8">
      <title>Document</title>
+     <link rel="stylesheet" type="text/css" href="game_of_life.css">
      
  </head>
 <body id="body">
@@ -11,8 +12,19 @@
         <input type="text" id="columns" name="wid" value=""><br>
         <label for="lname">Rows</label><br>
         <input type="text" id="rows" name="hei" value=""><br><br>
-        <button type="button"  onclick="getInputValue();">Submit</button>
+        <button type="button"  onclick="getInputValue()">Submit</button>
         <button type="button" onclick="simulate()">Simulate</button>
+        <button type="button" onclick="clear()">Clear</button>
+        <div class="presets">
+            <button type="button" class="presetsBtn" onclick="drawPreset()">Draw preset</button>
+            <select class="presets-content" id="select">
+                <option class="preset1" id="preset1" value="0" onclick="getPreset()" selected="selected" >Select preset</option>
+                <option class="preset1" id="preset1" value="1" onclick="getPreset()" >Toad</option>
+                <option class="preset1" id="preset1" value="2" onclick="getPreset()" >Acorn </option>
+                <option class="preset1" id="preset1" value="3" onclick="getPreset()" >LWSS</option>
+               
+            </select>
+        </div>
     </form>
 
     <p>
