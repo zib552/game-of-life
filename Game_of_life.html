@@ -14,7 +14,11 @@
         <input type="text" id="rows" name="hei" value=""><br><br>
         <button type="button"  onclick="getInputValue()">Submit</button>
         <button type="button" onclick="simulate()">Simulate</button>
-        <button type="button" onclick="clear()">Clear</button>
+        <button type="button" onclick="clearBtn()">Clear</button>
+        <label for="animate" class="animateLabel">Animate
+            <input type="checkbox" id="animate" class="checkbox" type="checkbox" value="1" autocomplete="off" onclick="animate1()">
+            <span class="checkbox"></span>
+        </label>
         <div class="presets">
             <button type="button" class="presetsBtn" onclick="drawPreset()">Draw preset</button>
             <select class="presets-content" id="select">
