@@ -1,4 +1,4 @@
-export function calcNewCellState(currentState, neighbours){
+function calcNewCellState(currentState, neighbours){
     let newState;
     //console.log(neighbours);
     if(neighbours === 3){
@@ -12,3 +12,5 @@ export function calcNewCellState(currentState, neighbours){
     }
     return newState;
 }
+
+module.exports = {calcNewCellState};
