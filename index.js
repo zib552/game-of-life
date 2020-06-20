@@ -1,3 +1,5 @@
+import { calcNewCellState } from './src/engine';
+
 let currentFrame;
 let intermediateFrame; //For holding the neighbour count
 let nextFrame; 
@@ -24,8 +26,6 @@ function drawWhilePressed(){
 }
 function removeDrawWhilePressed(){
     document.getElementById('canvas').removeEventListener('mousemove', draw);
-}
-function testDraw(){
 }
 function handleMouseClick(event){
     const boundingRect = canvas.getBoundingClientRect();
@@ -180,57 +180,6 @@ function simulate(){
     currentFrame = nextFrame;
     draw();        
 }
-function calcNewCellState(currentState, neighbours){
-    let newState;
-    //console.log(neighbours);
-    if(neighbours === 3){
-        newState = 1;
-    }
-    else if(neighbours === 2  && currentState === 1){
-        newState = 1; //Survive
-    }
-    else {
-        newState = 0; //Die
-    }
-    return newState;
-}
-
-function testCalcNewCellStateIsBorn(){
-    let result = calcNewCellState(0, 3);
-    if(result === 1){
-        console.log('PASS');
-    }
-    else{
-        console.error('FAILED');
-    }
-}
-
-function testCalcNewCellStateSurvive(){
-    let result = calcNewCellState(1, 2);
-    if(result === 1){
-        console.log('PASS');
-    }
-    else{
-        console.error('FAILED');
-    }
-}
-
-function testCalcNewCellStateDie(){
-    let result = calcNewCellState(1, 0);
-    if(result === 0){
-        console.log('PASS');
-    }
-    else{
-        console.error('FAILED');
-    }
-}
-
-function runTests(){
-    testCalcNewCellStateIsBorn();
-    testCalcNewCellStateSurvive();
-    testCalcNewCellStateDie();
-}  
-
 
 function reindexJ(num){
     if(num === -1){
@@ -252,8 +201,7 @@ function reindexJ(num){
     if(num === cols -1 ){
         indexNum = num;
         return num;
-    }
-    
+    }   
 } 
 function reindexI(num){
     if(num === -1){
