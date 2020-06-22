@@ -13,4 +13,25 @@ function calcNewCellState(currentState, neighbours){
     return newState;
 }
 
-module.exports = {calcNewCellState};
+function makeMatrix(rows, cols){
+    let  matrix= [];
+    for( let i = 0; i < rows; i++ ) {
+        matrix.push( [] );
+    }
+    for (let i = 0; i < rows; i++){
+        for (let j =  matrix[i].length; j < cols; j++){
+            matrix[i].push(0);
+        }
+    }
+    return matrix;
+}
+
+function calcCellCoordinates(canvasX, canvasY){
+    cellSize = 5;
+    let colNum = (Math.floor((canvasX / cellSize)));
+    let rowNum = (Math.floor((canvasY / cellSize)));
+    let point2 = {x: colNum,y: rowNum};
+    return point2;
+}
+
+module.exports = {calcNewCellState, makeMatrix, calcCellCoordinates};

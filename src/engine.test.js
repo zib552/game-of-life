@@ -1,5 +1,5 @@
 //import {calcNewCellState} from './engine';
-const {calcNewCellState} = require('./engine');
+const {calcNewCellState, makeMatrix, calcCellCoordinates} = require('./engine');
 
 test('Is born', () => {
     let result = calcNewCellState(0, 3);
@@ -14,4 +14,14 @@ test('Survives', () => {
 test('Dies', () => {
     let result = calcNewCellState(1, 0);
     expect(result).toBe(0);
-})
+});
+
+test('Make matrix', () => {
+    let result = makeMatrix(1, 1);
+    expect(result).toEqual([[0]]);
+});
+
+ test('Show row and col pos', () => {
+     let result = calcCellCoordinates(10, 20)
+     expect(result).toEqual({x: 2, y: 4})
+ })

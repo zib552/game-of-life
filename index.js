@@ -1,4 +1,4 @@
-import { calcNewCellState } from './src/engine';
+//import { calcNewCellState } from './src/engine';
 
 let currentFrame;
 let intermediateFrame; //For holding the neighbour count
@@ -27,9 +27,6 @@ function drawWhilePressed(){
 function removeDrawWhilePressed(){
     document.getElementById('canvas').removeEventListener('mousemove', draw);
 }
-function testDraw(){
-}
-
 function handleMouseClick(event){
     const boundingRect = canvas.getBoundingClientRect();
     let point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom);
@@ -116,6 +113,8 @@ function simulate(){
             iOffset = i + 1;
             iOffset = reindexI(iOffset);
             jOffset = reindexJ(jOffset);
+            //console.log('I OFFSET' +  iOffset + 'FOR CELL' + i + j);
+            //console.log('J OFFSET' +  jOffset + 'FOR CELL' + i + j);
             let bottomNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Bottom Right Neighbour
@@ -130,8 +129,6 @@ function simulate(){
             iOffset = i + 1;
             iOffset = reindexI(iOffset);
             jOffset = reindexJ(jOffset);
-            //console.log('I OFFSET' +  iOffset + 'FOR CELL' + i + j);
-            //console.log('J OFFSET' +  jOffset + 'FOR CELL' + i + j);
             let bottomLeftNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Top Neighbour
@@ -197,16 +194,6 @@ function calcNewCellState(currentState, neighbours){
     }
     return newState;
 }
-
-function testCalcNewCellStateIsBorn(){
-    let result = calcNewCellState(0, 3);
-    if(result === 1){
-        console.log('PASS');
-    }
-    else{
-        console.error('FAILED');
-    }
-}
 function reindexJ(num){
     if(num === -1){
         indexNum = cols - 1;
@@ -216,7 +203,7 @@ function reindexJ(num){
         indexNum = num;
         return indexNum;
     }
-    if (num < cols - 1 && num != -2 && num != 0){
+    if (num < cols && num != -2 && num != 0){
         indexNum = num;
         return indexNum;
     }
@@ -224,48 +211,6 @@ function reindexJ(num){
         indexNum = 0;
         return indexNum;
     }
-}
-
-function runTests(){
-    testCalcNewCellStateIsBorn();
-    testCalcNewCellStateSurvive();
-    testCalcNewCellStateDie();
-}  
-
-
-function reindexJ(num){
-    if(num === -1){
-        indexNum = cols - 1;
-
-    if(num === cols -1 ){
-        indexNum = num;
-        return num;
-    }   
-} 
-function reindexI(num){
-    if(num === -1){
-        indexNum = rows - 1;
-
-        return indexNum;
-    }
-    if(num === 0){
-        indexNum = num;
-        return indexNum;
-    }
-
-    if (num < cols - 1 && num != -2 && num != 0){
-        indexNum = num;
-        return indexNum;
-    }
-    if(num > cols - 1){
-        indexNum = 0;
-        return indexNum;
-    }
-    if(num === cols -1 ){
-        indexNum = num;
-        return num;
-    }
-    
 } 
 function reindexI(num){
     if(num === -1){
