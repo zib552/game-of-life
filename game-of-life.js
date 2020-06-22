@@ -7,15 +7,26 @@ let canvas = document.getElementById('canvas');
 let context = canvas.getContext("2d");
 const cellSize = 10;
 let body = document.getElementById('body').addEventListener('click', handleMouseClick);
+document.getElementById('canvas').addEventListener('mousedown', drawWhilePressed);
+document.getElementById('canvas').addEventListener('mouseup', removeDrawWhilePressed);
 let status;
 let value = 0;
+let rows = document.getElementById("rows").value;
+let cols = document.getElementById("columns").value;
 
 window.addEventListener('DOMContentLoaded', init);
 
 function init(){
     console.log('Hello from init');
 }
-
+function drawWhilePressed(){
+    document.getElementById('canvas').addEventListener('mousemove', draw);
+}
+function removeDrawWhilePressed(){
+    document.getElementById('canvas').removeEventListener('mousemove', draw);
+}
+function testDraw(){
+}
 function handleMouseClick(event){
     const boundingRect = canvas.getBoundingClientRect();
     let point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom);
@@ -77,7 +88,6 @@ function draw(){
     }
 }
 function simulate(){
-    console.log('INITIALIZE');
     for (let i = 0; i < currentFrame.length; i++){
         for (let j = 0; j < currentFrame[0].length; j++){
             
@@ -87,62 +97,62 @@ function simulate(){
             //Right Neighbour
             jOffset = j + 1;
             iOffset = i;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let rightNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Left Neighbour
             jOffset = j - 1;
             iOffset = i;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let leftNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Bottom Neighbour
             jOffset = j;
             iOffset = i + 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let bottomNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Bottom Right Neighbour
             jOffset = j + 1;
             iOffset = i + 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let bottomRightNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Bottom Left Neighbour
             jOffset = j - 1;
             iOffset = i + 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
+            //console.log('I OFFSET' +  iOffset + 'FOR CELL' + i + j);
+            //console.log('J OFFSET' +  jOffset + 'FOR CELL' + i + j);
             let bottomLeftNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Top Neighbour
             jOffset = j;
             iOffset = i - 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let topNeighbourCount = currentFrame[iOffset][jOffset];
             
 
             //Top Left Neighbour
             jOffset = j - 1;
             iOffset = i - 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let topLeftNeighbourCount = currentFrame[iOffset][jOffset];
 
             //Top Right Neighbour
             jOffset = j + 1;
             iOffset = i - 1;
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
+            iOffset = reindexI(iOffset);
+            jOffset = reindexJ(jOffset);
             let topRightNeighbourCount = currentFrame[iOffset][jOffset];
 
-            iOffset = reindex(iOffset);
-            jOffset = reindex(jOffset);
 
             let totalNeighbourCount = topNeighbourCount
                 + topRightNeighbourCount
@@ -154,8 +164,10 @@ function simulate(){
                 + topLeftNeighbourCount; 
 
             intermediateFrame[i][j] = totalNeighbourCount;
-            //console.log('Cell ' + i + j + ' Has ' +totalNeighbourCount + ' total neighbours neighbours' + rightNeighbourCount + ' RIGHT NEIGHBOURS ' + leftNeighbourCount + ' LEFT NEIGHBOURS ' + topNeighbourCount + ' TOP NEIGHBOURS ' + topRightNeighbourCount + ' TOP RIGHT NEIGHBOURS ' + topLeftNeighbourCount + ' TOP LEFT NEIGHBOURS ' + bottomNeighbourCount + ' BOTTOM NEIGHBOURS ' + bottomRightNeighbourCount + ' BOTTOM RIGHT NEIGHBOURS ' + bottomLeftNeighbourCount + ' BOTTOM LEFT NEIGHBOURS ');
-        }            
+            if(totalNeighbourCount != 0){
+                //console.log('Cell ' + i + j + ' Has ' +totalNeighbourCount + ' total neighbours neighbours' + rightNeighbourCount + ' RIGHT NEIGHBOURS ' + leftNeighbourCount + ' LEFT NEIGHBOURS ' + topNeighbourCount + ' TOP NEIGHBOURS ' + topRightNeighbourCount + ' TOP RIGHT NEIGHBOURS ' + topLeftNeighbourCount + ' TOP LEFT NEIGHBOURS ' + bottomNeighbourCount + ' BOTTOM NEIGHBOURS ' + bottomRightNeighbourCount + ' BOTTOM RIGHT NEIGHBOURS ' + bottomLeftNeighbourCount + ' BOTTOM LEFT NEIGHBOURS ');  
+            }
+        }        
     }
    
     for (let i = 0; i < intermediateFrame.length; i++){
@@ -163,16 +175,14 @@ function simulate(){
             nextFrame[i][j] = calcNewCellState(currentFrame[i][j], intermediateFrame[i][j]);
         }
     }
-    //console.table(currentFrame);
-    //console.table(intermediateFrame);
-    //console.table(nextFrame);
+    
 
     currentFrame = nextFrame;
     draw();        
 }
 function calcNewCellState(currentState, neighbours){
     let newState;
-    console.log(neighbours);
+    //console.log(neighbours);
     if(neighbours === 3){
         newState = 1;
     }
@@ -222,27 +232,43 @@ function runTests(){
 }  
 
 
-function reindex(num){
+function reindexJ(num){
     if(num === -1){
-        //num = matrix.length - 1;
-        indexNum = currentFrame.length - 1;
+        indexNum = cols - 1;
         return indexNum;
     }
     if(num === 0){
         indexNum = num;
         return indexNum;
     }
-    if(num === -2){
-        //num = 8;
-        indexNum = 8;
+    if (num < cols - 1 && num != -2 && num != 0){
+        indexNum = num;
         return indexNum;
     }
-    if (num < currentFrame.length && num != -2 && num != 0){
+    if(num > cols - 1){
+        indexNum = 0;
+        return indexNum;
+    }
+    if(num === cols -1 ){
+        indexNum = num;
+        return num;
+    }
+    
+} 
+function reindexI(num){
+    if(num === -1){
+        indexNum = rows - 1;
+        return indexNum;
+    }
+    if(num === 0){
+        indexNum = num;
+        return indexNum;
+    }
+    if (num < rows && num != -2 && num != 0){
         indexNum = num;
         return indexNum;
     }
     if(num >= currentFrame.length){
-        //num = 0;
         indexNum = 0;
         return indexNum;
     }
@@ -258,18 +284,11 @@ function makeMatrix(rows, cols){
             matrix[i].push(0);
         }
     }
-    //console.table(matrix);
     return matrix;
 }
-
-/* function toggleState(rowPoint, colPoint){
-    arr[rowPoint][colPoint] = 1;
-    return arr;
-} */
-
 function getInputValue() {
-    let rows = document.getElementById("rows").value;
-    let cols = document.getElementById("columns").value;
+    rows = document.getElementById("rows").value;
+    cols = document.getElementById("columns").value;
     const h = rows * cellSize;
     canvas.height = h;
 
@@ -296,16 +315,14 @@ function drawBoard(w, h){
     }
     context.stroke();
 }   
-
 function getPreset(){
     let select = document.getElementById('select');
     value  = select.options[select.selectedIndex].value;
-    console.log(value);
+    return value;
 }
 function drawPreset(){
-    console.log('INIT');
+    value = getPreset();
     numValue = parseInt(value);
-    console.log(numValue);
     if (numValue === 1 && currentFrame.length >= 17 && currentFrame[16][16] != undefined ){
         clear();
         currentFrame[8][7] = 1;
@@ -368,6 +385,41 @@ function clear(){
         }
     }
 }
+function clearBtn(){
+    for (let i = 0; i < currentFrame.length; i++){
+        for (let j = 0; j < currentFrame[0].length; j++){
+            currentFrame[i][j] = 0;
+        }
+    }
+    for (let i = 0; i < intermediateFrame.length; i++){
+        for (let j = 0; j < intermediateFrame[0].length; j++){
+            intermediateFrame[i][j] = 0;
+        }
+    }
+    for (let i = 0; i < nextFrame.length; i++){
+        for (let j = 0; j < nextFrame[0].length; j++){
+            nextFrame[i][j] = 0;
+        }
+    }
+    draw();
+}
+function timer(){
+    while (checkedVal === true){
+        simulate();
+        draw();
+    } 
+}
+function animate1(){
+    checkedVal =  document.getElementById('animate').checked;
+    console.log(checkedVal);
+    timer(function() {
+        while (checkedVal === true){
+            //simulate();
+            //draw();
+        } 
+    }, 2000);    
+}
+
 
 
 
