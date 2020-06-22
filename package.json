@@ -1,0 +1,26 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "web-server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zib552/game-of-life.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Mykolas S.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zib552/game-of-life/issues"
+  },
+  "homepage": "https://github.com/zib552/game-of-life#readme",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
+}

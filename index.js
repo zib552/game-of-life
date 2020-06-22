@@ -1,3 +1,5 @@
+import { calcNewCellState } from './src/engine';
+
 let currentFrame;
 let intermediateFrame; //For holding the neighbour count
 let nextFrame; 
@@ -27,6 +29,7 @@ function removeDrawWhilePressed(){
 }
 function testDraw(){
 }
+
 function handleMouseClick(event){
     const boundingRect = canvas.getBoundingClientRect();
     let point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom);
@@ -204,24 +207,22 @@ function testCalcNewCellStateIsBorn(){
         console.error('FAILED');
     }
 }
-
-function testCalcNewCellStateSurvive(){
-    let result = calcNewCellState(1, 2);
-    if(result === 1){
-        console.log('PASS');
+function reindexJ(num){
+    if(num === -1){
+        indexNum = cols - 1;
+        return indexNum;
     }
-    else{
-        console.error('FAILED');
+    if(num === 0){
+        indexNum = num;
+        return indexNum;
     }
-}
-
-function testCalcNewCellStateDie(){
-    let result = calcNewCellState(1, 0);
-    if(result === 0){
-        console.log('PASS');
+    if (num < cols - 1 && num != -2 && num != 0){
+        indexNum = num;
+        return indexNum;
     }
-    else{
-        console.error('FAILED');
+    if(num > cols - 1){
+        indexNum = 0;
+        return indexNum;
     }
 }
 
@@ -235,12 +236,23 @@ function runTests(){
 function reindexJ(num){
     if(num === -1){
         indexNum = cols - 1;
+
+    if(num === cols -1 ){
+        indexNum = num;
+        return num;
+    }   
+} 
+function reindexI(num){
+    if(num === -1){
+        indexNum = rows - 1;
+
         return indexNum;
     }
     if(num === 0){
         indexNum = num;
         return indexNum;
     }
+
     if (num < cols - 1 && num != -2 && num != 0){
         indexNum = num;
         return indexNum;
