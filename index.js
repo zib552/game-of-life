@@ -88,6 +88,7 @@ function draw(){
     }
 }
 function simulate(){
+    console.log(currentFrame);
     for (let i = 0; i < currentFrame.length; i++){
         for (let j = 0; j < currentFrame[0].length; j++){
             
@@ -228,8 +229,7 @@ function reindexI(num){
     if(num >= currentFrame.length){
         indexNum = 0;
         return indexNum;
-    }
-    
+    }  
 } 
 function makeMatrix(rows, cols){
     let  matrix= [];
@@ -244,6 +244,7 @@ function makeMatrix(rows, cols){
     return matrix;
 }
 function getInputValue() {
+    
     rows = document.getElementById("rows").value;
     cols = document.getElementById("columns").value;
     const h = rows * cellSize;
