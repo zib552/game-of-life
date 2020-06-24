@@ -22,5 +22,8 @@
   "homepage": "https://github.com/zib552/game-of-life#readme",
   "devDependencies": {
     "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }

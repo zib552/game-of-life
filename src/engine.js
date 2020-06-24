@@ -34,6 +34,7 @@ function calcCellCoordinates(canvasX, canvasY, cellSize){
 }
 
 function reindexJ(num, cols){
+    let indexNum = 0;
     if(num === -1){
         indexNum = cols - 1;
         return indexNum;
@@ -53,6 +54,7 @@ function reindexJ(num, cols){
 } 
 
 function reindexI(num, rows){
+    let indexNum = 0;
     if(num === -1){
         indexNum = rows - 1;
         return indexNum;
