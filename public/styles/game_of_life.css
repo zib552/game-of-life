@@ -77,6 +77,10 @@
 .animateLabel input:checked ~ .checkbox:after {
     display: inline;
   }
+
+.canvas {
+    background:  #ffffff;
+}
 .presetsBtn:hover {background-color: #e5f1fb; border-color: #0078d7;}
 .presets-content:focus .preset1{display: block;}
 .preset1:hover {background-color: #e5f1fb; border-color: #0078d7;}

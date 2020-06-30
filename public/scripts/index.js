@@ -1,23 +1,15 @@
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw} from './engine.js';
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS} from './engine.js';
 
 let currentFrame;
 let intermediateFrame; //For holding the neighbour count
 let nextFrame; 
-let spanMouseX = document.getElementById('mouse-x'); 
-let spanMouseY = document.getElementById('mouse-y');
-let canvas = document.getElementById('canvas');
 let context = canvas.getContext("2d");
 const cellSize = 10;
-let body = document.getElementById('body').addEventListener('click', handleMouseClick);
 let status;
 let value = 0;
-let rows = document.getElementById("rows").value;
-let cols = document.getElementById("columns").value;
-
 window.addEventListener('DOMContentLoaded', init);
 
 function init(){
-    console.log('Hello from init');
     let submitBtn = document.getElementById('submit-button');
     submitBtn.addEventListener('click', getInputValue);
     let simulateBtn = document.getElementById('simulate-button');
@@ -26,13 +18,18 @@ function init(){
     clearBtn1.addEventListener('click', clear);
     let drawPresetBtn = document.getElementById('drawPreset-button');
     drawPresetBtn.addEventListener('click', drawPreset);
-    let selectPresetBtn = document.getElementById('preset1');
-    selectPresetBtn.addEventListener('click', getPreset);
     let animateBtn = document.getElementById('animate');
     animateBtn.addEventListener('click', animate);
+    let body = document.getElementById('body').addEventListener('click', handleMouseClick);
+    let spanMouseX = document.getElementById('mouse-x'); 
+    let spanMouseY = document.getElementById('mouse-y');
+    let canvas = document.getElementById('canvas');
+    let spans = {spanMouseX: spanMouseX, spanMouseY: spanMouseY, canvas: canvas};
+    return spans;
 }
 function handleMouseClick(event){
-    const boundingRect = canvas.getBoundingClientRect();
+    let spans = init();
+    const boundingRect = spans.canvas.getBoundingClientRect();
     let point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom);
     if(point){
         let point2 = calcCellCoordinates(point.x , point.y, cellSize);
@@ -43,17 +40,17 @@ function handleMouseClick(event){
             currentFrame[point2.y][point2.x] = 0;
         }
         draw(currentFrame, context, cellSize);
-        spanMouseX.innerHTML = 'Column ' + point2.x;
-        spanMouseY.innerHTML = 'Row ' + point2.y;
+        spans.spanMouseX.innerHTML = 'Column ' + point2.x;
+        spans.spanMouseY.innerHTML = 'Row ' + point2.y;
     }
     else {
-        spanMouseX.innerHTML = 'Out of bounds';
-        spanMouseY.innerHTML = 'Out of bounds';
+        spans.spanMouseX.innerHTML = 'Out of bounds';
+        spans.spanMouseY.innerHTML = 'Out of bounds';
     }
 }
 function getInputValue() {
-    rows = document.getElementById("rows").value;
-    cols = document.getElementById("columns").value;
+    let rows = document.getElementById("rows").value;
+    let cols = document.getElementById("columns").value;
 
     const h = rows * cellSize;
     canvas.height = h;
@@ -74,6 +71,9 @@ function getInputValue() {
 }
 
 function simulate(){
+    let rows = document.getElementById("rows").value;
+    let cols = document.getElementById("columns").value;
+
     let intermediateFrame = getIntermediateFrame(currentFrame, rows, cols);
     for (let i = 0; i < intermediateFrame.length; i++){
         for (let j = 0; j < intermediateFrame[0].length; j++){
@@ -89,37 +89,15 @@ function drawPreset(){
     let numValue = parseInt(value);
     if (numValue === 1 && currentFrame.length >= 17 && currentFrame[16][16] != undefined ){
         clear();
-        currentFrame[8][7] = 1;
-        currentFrame[8][8] = 1;
-        currentFrame[8][9] = 1;
-        currentFrame[9][8] = 1;
-        currentFrame[9][7] = 1;
-        currentFrame[9][6] = 1;
-        draw(currentFrame, context, cellSize);
+        drawToad(currentFrame, context, cellSize);
     }
     if (numValue === 2 && currentFrame.length >= 17 && currentFrame[16][16] != undefined){
-        clear(currentFrame, intermediateFrame, nextFrame);
-        currentFrame[7][8] = 1;
-        currentFrame[8][9] = 1;
-        currentFrame[8][10] = 1;
-        currentFrame[8][11] = 1;
-        currentFrame[8][6] = 1;
-        currentFrame[8][5] = 1;
-        currentFrame[6][6] = 1;
-        draw(currentFrame, context, cellSize);
+        clear();
+        drawAcorn(currentFrame, context, cellSize);
     }
     if (numValue === 3 && currentFrame.length >= 17 && currentFrame[16][16] != undefined){
-        clear(currentFrame, intermediateFrame, nextFrame);
-        currentFrame[7][9] = 1;
-        currentFrame[7][6] = 1;
-        currentFrame[8][10] = 1;
-        currentFrame[9][10] = 1;
-        currentFrame[9][6] = 1;
-        currentFrame[10][7] = 1;
-        currentFrame[10][8] = 1;
-        currentFrame[10][9] = 1;
-        currentFrame[10][10] = 1;
-        draw(currentFrame, context, cellSize);
+        clear();
+        drawLWSS(currentFrame, context, cellSize)
     }
 
     if (currentFrame === undefined){
@@ -132,6 +110,7 @@ function drawPreset(){
         alert('Grid is too small. The minimum size is 17x17');
     }    
 }
+
 function clear(){
     for (let i = 0; i < currentFrame.length; i++){
         for (let j = 0; j < currentFrame[0].length; j++){
@@ -150,22 +129,20 @@ function clear(){
     }
     draw(currentFrame, context, cellSize);
 }
-function timer(checkedVal){
-    while (checkedVal === true){
-        simulate();
-        draw(currentFrame, context);
-    } 
-}
 function animate(){
-    let checkedVal =  document.getElementById('animate').checked;
+    let checkedVal = document.getElementById('animate').checked;
     console.log(checkedVal);
-    timer(function(checkedVal) {
-        while (checkedVal === true){
-            //simulate();
-            //draw();
-        } 
-    }, 20);    
+    if(checkedVal === true){
+        setTimeout(function(){ simulate(); }, 500);
+        setTimeout(function(){ animate(); }, 500);
+    }
+    else{
+        console.log('NOT ANIMATING');
+    }
 }
 
+function alert(){
+    console.log('ALERT');
+}
 
 

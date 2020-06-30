@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "main": "web-server.js",
+  "main": "serv.js",
   "scripts": {
     "test": "jest"
   },

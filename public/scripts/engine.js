@@ -194,8 +194,8 @@ function drawBoard(w, h, context, cellSize){
 }
 
 function getPreset(){
-    let select = document.getElementById('select');
     let value  = select.options[select.selectedIndex].value;
+    console.log(value);
     return value;
 }
 
@@ -213,4 +213,39 @@ function draw(currentFrame, context, cellSize){
         }
     }
 }
-export {calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw};
+
+function drawToad(currentFrame, context, cellSize) {
+    currentFrame[8][7] = 1;
+    currentFrame[8][8] = 1;
+    currentFrame[8][9] = 1;
+    currentFrame[9][8] = 1;
+    currentFrame[9][7] = 1;
+    currentFrame[9][6] = 1;
+    draw(currentFrame, context, cellSize);
+}
+
+function drawAcorn(currentFrame, context, cellSize) {
+    currentFrame[7][8] = 1;
+    currentFrame[8][9] = 1;
+    currentFrame[8][10] = 1;
+    currentFrame[8][11] = 1;
+    currentFrame[8][6] = 1;
+    currentFrame[8][5] = 1;
+    currentFrame[6][6] = 1;
+    draw(currentFrame, context, cellSize);
+}
+
+function drawLWSS(currentFrame, context, cellSize) {
+    currentFrame[7][9] = 1;
+    currentFrame[7][6] = 1;
+    currentFrame[8][10] = 1;
+    currentFrame[9][10] = 1;
+    currentFrame[9][6] = 1;
+    currentFrame[10][7] = 1;
+    currentFrame[10][8] = 1;
+    currentFrame[10][9] = 1;
+    currentFrame[10][10] = 1;
+    draw(currentFrame, context, cellSize);
+}
+
+export {calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS};
