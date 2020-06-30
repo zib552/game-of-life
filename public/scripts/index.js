@@ -112,21 +112,11 @@ function drawPreset(){
 }
 
 function clear(){
-    for (let i = 0; i < currentFrame.length; i++){
-        for (let j = 0; j < currentFrame[0].length; j++){
-            currentFrame[i][j] = 0;
-        }
-    }
-    for (let i = 0; i < intermediateFrame.length; i++){
-        for (let j = 0; j < intermediateFrame[0].length; j++){
-            intermediateFrame[i][j] = 0;
-        }
-    }
-    for (let i = 0; i < nextFrame.length; i++){
-        for (let j = 0; j < nextFrame[0].length; j++){
-            nextFrame[i][j] = 0;
-        }
-    }
+    let rows = document.getElementById("rows").value;
+    let cols = document.getElementById("columns").value;
+    currentFrame = makeMatrix(rows, cols);
+    intermediateFrame = makeMatrix(rows, cols);
+    nextFrame = makeMatrix(rows, cols);
     draw(currentFrame, context, cellSize);
 }
 function animate(){
