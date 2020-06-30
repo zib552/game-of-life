@@ -131,8 +131,5 @@ function animate(){
     }
 }
 
-function alert(){
-    console.log('ALERT');
-}
 
 

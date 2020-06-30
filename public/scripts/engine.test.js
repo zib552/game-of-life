@@ -1,5 +1,5 @@
-//import {calcNewCellState} from './engine';
-const {calcNewCellState, makeMatrix, calcCellCoordinates, reindexJ, reindexI, calcClickCoordinates, getInputValue, draw, clearBtn} = require('./engine');
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS} from './engine.js';
+//const {calcNewCellState, makeMatrix, calcCellCoordinates, reindexJ, reindexI, calcClickCoordinates, getInputValue, draw, clearBtn} = require('./engine');
 
 test('Is born', () => {
     let result = calcNewCellState(0, 3);
