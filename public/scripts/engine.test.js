@@ -1,4 +1,4 @@
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS} from './engine.js';
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, reindexJ, reindexI} from './engine.js';
 //const {calcNewCellState, makeMatrix, calcCellCoordinates, reindexJ, reindexI, calcClickCoordinates, getInputValue, draw, clearBtn} = require('./engine');
 
 test('Is born', () => {
@@ -80,30 +80,3 @@ test('Get click coordinates outside of grid', () => {
     expect(result).toEqual(null);
 });
 
-test('Get width and height', () => {
-    let result = getInputValue(50, 12, 5);
-    expect(result).toBe(250, 60);
-})
-
-test('Cell is drawn black', () => {
-    let result = draw([[1,1,1,1,1],[0,1,0,0,0],[0,0,0,0,0]]);
-    for (let i = 0; i < 4; i++){
-        for (let j = 0; j < 6; j++){
-            expect(result).toBe(true);
-        }
-    }
-});
-
-test('Cell is drawn white', () => {
-    let result = draw([[0,0,0,0,0],[0,0,1,0,0],[0,0,0,0,0]]);
-    for (let i = 0; i < 4; i++){
-        for (let j = 0; j < 6; j++){
-            expect(result).toBe(false);
-        }
-    }
-});
-
-test('Clear button', () => {
-    let result = clearBtn([[0,0],[0,0]], [[0,1],[0,0]], [[0,1],[0,0]]);
-    expect(result).not.toContain(1)
-});

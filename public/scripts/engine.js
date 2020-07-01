@@ -203,6 +203,7 @@ function draw(currentFrame, context, cellSize){
     for (let i = 0; i < currentFrame.length; i++){
         for (let j = 0; j < currentFrame[0].length; j++){
             if(currentFrame[i][j] === 1){
+                console.log(context);
                 context.fillStyle = 'black';
                 context.fillRect(j*cellSize + 1, i*cellSize + 1, cellSize - 2, cellSize - 2);
             }
@@ -248,4 +249,4 @@ function drawLWSS(currentFrame, context, cellSize) {
     draw(currentFrame, context, cellSize);
 }
 
-export {calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS};
+export {calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, reindexJ, reindexI};
