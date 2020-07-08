@@ -1,82 +1,82 @@
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, reindexJ, reindexI} from './engine.js';
-//const {calcNewCellState, makeMatrix, calcCellCoordinates, reindexJ, reindexI, calcClickCoordinates, getInputValue, draw, clearBtn} = require('./engine');
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, reindexJ, reindexI } from './engine.js'
 
 test('Is born', () => {
-    let result = calcNewCellState(0, 3);
-    expect(result).toBe(1);
-});
+  const result = calcNewCellState(0, 3)
+  expect(result).toBe(1)
+})
 
 test('Survives', () => {
-    let result = calcNewCellState(1, 2);
-    expect(result).toBe(1);
-});
+  const result = calcNewCellState(1, 2)
+  expect(result).toBe(1)
+})
 
 test('Dies', () => {
-    let result = calcNewCellState(1, 0);
-    expect(result).toBe(0);
-});
+  const result = calcNewCellState(1, 0)
+  expect(result).toBe(0)
+})
 
 test('Make matrix', () => {
-    let result = makeMatrix(1, 1);
-    for (let i = 0; i < 2; i++){
-        for (let j = 0; j < 1; j++){
-            expect(result).toEqual([[0]]);
-        }
+  const result = makeMatrix(1, 1)
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 1; j++) {
+      expect(result).toEqual([[0]])
     }
-});
+  }
+})
 
 test('Show row and col pos', () => {
-     let result = calcCellCoordinates(10, 20, 5)
-     expect(result).toEqual({x: 2, y: 4});
- });
+  const result = calcCellCoordinates(10, 20, 5)
+  expect(result).toEqual({ x: 2, y: 4 })
+})
 
 test('Reindex when J pos is -1', () => {
-    let result = reindexJ(-1, 5)
-    expect(result).toBe(4)
- });
+  const result = reindexJ(-1, 5)
+  expect(result).toBe(4)
+})
 
 test('Reindex when J pos is 0', () => {
-    let result = reindexJ(0, 10)
-    expect(result).toBe(0)
- });
+  const result = reindexJ(0, 10)
+  expect(result).toBe(0)
+})
 
 test('Reindex when J pos is inside grid', () => {
-    let result = reindexJ(9, 10)
-    expect(result).toBe(9)
- });
+  const result = reindexJ(9, 10)
+  expect(result).toBe(9)
+})
 
 test('Reindex when J pos is outside of grid', () => {
-    let result = reindexJ(12, 10)
-    expect(result).toBe(0)
- });
+  const result = reindexJ(12, 10)
+  expect(result).toBe(0)
+})
 
 test('Reindex when I pos is -1', () => {
-     let result = reindexI(-1, 10);
-     expect(result).toBe(9);
- });
+  const result = reindexI(-1, 10)
+  expect(result).toBe(9)
+})
 
 test('Reindex when I pos is 0', () => {
-    let result = reindexI(0, 10);
-    expect(result).toBe(0);
-});
+  const result = reindexI(0, 10)
+  expect(result).toBe(0)
+})
 
 test('Reindex when I pos is inside grid', () => {
-    let result = reindexI(9, 10);
-    expect(result).toBe(9);
-});
+  const result = reindexI(9, 10)
+  expect(result).toBe(9)
+})
 
 test('Reindex when I pos is outside of grid', () => {
-    let result = reindexI(11, 10);
-    expect(result).toBe(0);
-});
+  const result = reindexI(11, 10)
+  expect(result).toBe(0)
+})
 
 test('Get click coordinates inside grid', () => {
-    let result = calcClickCoordinates(24, 193, 8, 178, 308, 378);
-    expect(result).toEqual({x: 16, y: 15});
-});
+  const result = calcClickCoordinates(24, 193, 8, 178, 308, 378)
+  expect(result).toEqual({ x: 16, y: 15 })
+})
 
 test('Get click coordinates outside of grid', () => {
-    let result = calcClickCoordinates(319, 185, 8, 178, 308, 378);
-    expect(result).toEqual(null);
-});
-
+  const result = calcClickCoordinates(319, 185, 8, 178, 308, 378)
+  expect(result).toEqual(null)
+})
