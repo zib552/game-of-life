@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, reindexJ, reindexI } from './engine.js'
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, reindexJ, reindexI, resize } from './engine.js'
 
 test('Is born', () => {
   const result = calcNewCellState(0, 3)
@@ -79,4 +78,9 @@ test('Get click coordinates inside grid', () => {
 test('Get click coordinates outside of grid', () => {
   const result = calcClickCoordinates(319, 185, 8, 178, 308, 378)
   expect(result).toEqual(null)
+})
+
+test('Resize array', () => {
+  const result = resize({ h: 1152, w: 1600 }, 8)
+  expect(result).toEqual({ arrH: 144, arrW: 200 })
 })

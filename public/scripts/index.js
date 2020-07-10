@@ -1,19 +1,18 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS } from './engine.js'
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, resize } from './engine.js'
 
 let currentFrame
-let intermediateFrame // For holding the neighbour count
 let nextFrame
 const context = canvas.getContext('2d')
 const cellSize = 8
-let status
-const value = 0
+const topOffset = 96
+const leftOffset = 24
+const crdOffset = 1
 window.addEventListener('DOMContentLoaded', init)
-window.addEventListener('resize', resize)
+window.addEventListener('resize', callResize)
 function init () {
   console.log('INIT')
+  const crdBtn = document.getElementById('crd-btn')
+  crdBtn.addEventListener('click', getCoordinates)
   const simulateBtn = document.getElementById('simulate-button')
   simulateBtn.addEventListener('click', simulate)
   const clearBtn1 = document.getElementById('clear-button')
@@ -22,8 +21,8 @@ function init () {
   drawPresetBtn.addEventListener('click', drawPreset)
   const animateBtn = document.getElementById('animate')
   animateBtn.addEventListener('click', animate)
-  const body = document.getElementById('body').addEventListener('click', handleMouseClick)
-  resize()
+  document.getElementById('body').addEventListener('click', handleMouseClick)
+  callResize()
 }
 function handleMouseClick (event) {
   const spanMouseX = document.getElementById('mouse-x')
@@ -39,41 +38,18 @@ function handleMouseClick (event) {
       currentFrame[point2.y][point2.x] = 0
     }
     draw(currentFrame, context, cellSize)
-    spanMouseX.innerHTML = 'Column' + point2.x
-    spanMouseY.innerHTML = 'Row ' + point2.y
+    spanMouseX.innerHTML = 'Row ' + point2.y
+    spanMouseY.innerHTML = 'Column ' + point2.x
   } else {
     spanMouseX.innerHTML = 'Out of bounds'
     spanMouseY.innerHTML = 'Out of bounds'
   }
 }
-function getInputValue () {
-  /* const rows = document.getElementById('rows').value
-  const cols = document.getElementById('columns').value
-
-  const h = rows * cellSize
-  canvas.height = h
-
-  const w = cols * cellSize
-  canvas.width = w
-
-  const arrH = h / cellSize
-  const arrW = w / cellSize
-
-  currentFrame = makeMatrix(arrH, arrW)
-  nextFrame = makeMatrix(arrH, arrW)
-  intermediateFrame = makeMatrix(arrH, arrW)
-  // drawBoard(w, h, context, cellSize) */
-}
-
 function simulate () {
-  let Nwid = (Math.ceil(window.innerWidth / 8) * 8)
-  let Nhei = (Math.ceil(window.innerHeight / 8) * 8)
+  const adjustedSize = calcAdjustedSize()
 
-  let wid = Nwid - 32
-  let hei = Nhei - 32
-
-  let rows = hei / cellSize
-  let cols = wid / cellSize
+  const rows = adjustedSize.h / cellSize
+  const cols = adjustedSize.w / cellSize
 
   const intermediateFrame = getIntermediateFrame(currentFrame, rows, cols)
   for (let i = 0; i < intermediateFrame.length; i++) {
@@ -86,27 +62,22 @@ function simulate () {
 }
 
 function drawPreset () {
-  let Nwid = (Math.ceil(window.innerWidth / 8) * 8)
-  let Nhei = (Math.ceil(window.innerHeight / 8) * 8)
-  let wid = Nwid - 32
-  let hei = Nhei - 32
-  const arrH = hei / cellSize
-  const arrW = wid / cellSize
-  currentFrame = makeMatrix(arrH, arrW)
+  const crd = getCoordinates()
   const value = getPreset()
   const numValue = parseInt(value)
+  const adjustedSize = calcAdjustedSize()
+
+  const rows = adjustedSize.h / cellSize
+  const cols = adjustedSize.w / cellSize
+
   if (numValue === 1 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    console.log(currentFrame)
-    clear()
-    drawToad(currentFrame, context, cellSize)
+    drawToad(currentFrame, context, cellSize, crd, rows, cols)
   }
   if (numValue === 2 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    clear()
-    drawAcorn(currentFrame, context, cellSize)
+    drawAcorn(currentFrame, context, cellSize, crd, rows, cols)
   }
   if (numValue === 3 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    clear()
-    drawLWSS(currentFrame, context, cellSize)
+    drawLWSS(currentFrame, context, cellSize, crd, rows, cols)
   }
 
   if (currentFrame === undefined) {
@@ -119,44 +90,65 @@ function drawPreset () {
 }
 
 function clear () {
-  let Nwid = (Math.ceil(window.innerWidth / 8) * 8)
-  let Nhei = (Math.ceil(window.innerHeight / 8) * 8)
-  let wid = Nwid - 32
-  let hei = Nhei - 32
-  const rows = hei / cellSize
-  const cols = wid / cellSize
+  const adjustedSize = calcAdjustedSize()
+
+  const rows = adjustedSize.h / cellSize
+  const cols = adjustedSize.w / cellSize
+
   currentFrame = makeMatrix(rows, cols)
-  intermediateFrame = makeMatrix(rows, cols)
   nextFrame = makeMatrix(rows, cols)
   draw(currentFrame, context, cellSize)
 }
 function animate () {
   const checkedVal = document.getElementById('animate').checked
-  console.log(checkedVal)
   if (checkedVal === true) {
-    setTimeout(function () { simulate() }, 500)
-    setTimeout(function () { animate() }, 500)
+    setTimeout(function () { simulate() }, 50)
+    setTimeout(function () { animate() }, 50)
   } else {
     console.log('NOT ANIMATING')
   }
 }
 
-function resize () {
-  let Nwid = (Math.ceil(window.innerWidth / 8) * 8)
-  let Nhei = (Math.ceil(window.innerHeight / 8) * 8)
-  let wid = Nwid - 32
-  let hei = Nhei - 32
+function calcAdjustedSize () {
+  const Nwid = (Math.ceil(window.innerWidth / cellSize) * cellSize)
+  const Nhei = (Math.ceil(window.innerHeight / cellSize) * cellSize)
+  const wid = Nwid - leftOffset
+  const hei = Nhei - topOffset
+  const adjustedSize = { w: wid, h: hei }
+  return adjustedSize
+}
 
-  canvas.height = hei
+function callResize () {
+  const adjustedSize = calcAdjustedSize()
+  const adjustedArr = resize(adjustedSize, cellSize)
 
-  canvas.width = wid
+  canvas.height = adjustedSize.h
+  canvas.width = adjustedSize.w
 
-  const arrH = hei / cellSize
-  const arrW = wid / cellSize
+  currentFrame = makeMatrix(adjustedArr.arrH, adjustedArr.arrW)
+  nextFrame = makeMatrix(adjustedArr.arrH, adjustedArr.arrW)
 
-  currentFrame = makeMatrix(arrH, arrW)
-  nextFrame = makeMatrix(arrH, arrW)
-  intermediateFrame = makeMatrix(arrH, arrW)
-  const context = canvas.getContext('2d')
-  drawBoard(wid, hei, context, cellSize)
+  drawBoard(adjustedSize.w, adjustedSize.h, context, cellSize)
+}
+
+function getCoordinates () {
+  const coordinates = document.getElementById('coordinates')
+  const adjustedSize = calcAdjustedSize()
+  const rowCrd = document.getElementById('row').value
+  const colCrd = document.getElementById('column').value
+
+  const prsdRowCrd = parseInt(rowCrd)
+  const prsdColCrd = parseInt(colCrd)
+
+  const rows = (adjustedSize.h / cellSize) - crdOffset
+  const cols = (adjustedSize.w / cellSize) - crdOffset
+  if (isNaN(prsdRowCrd) || isNaN(prsdColCrd)) {
+    coordinates.innerHTML = 'You must submit coordinates to draw a preset'
+  } else if (prsdRowCrd > rows || prsdColCrd > cols) {
+    alert('Coordinates too big, the max row coordinate is ' + rows + ' and the max column coordinate is ' + cols)
+  } else {
+    coordinates.innerHTML = 'Current preset coordinates: row ' + prsdRowCrd + ' column ' + prsdColCrd
+  }
+  const crd = { row: prsdRowCrd, col: prsdColCrd }
+  return crd
 }

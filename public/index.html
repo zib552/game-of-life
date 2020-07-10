@@ -8,28 +8,36 @@
  </head>
 <body id="body">
     <form>
-        <button type="button" id="simulate-button">Simulate</button>
-        <button type="button" id="clear-button">Clear</button>
-        <label for="animate" class="animateLabel">Animate
-            <input type="checkbox" id="animate" class="checkbox" type="checkbox" value="1" autocomplete="off">
-            <span class="checkbox"></span>
-        </label>
-        <div class="presets">
-            <button type="button" class="presetsBtn" id="drawPreset-button">Draw preset</button>
-            <select class="presets-content" id="select">
-                <option class="preset1" value="0"  selected="selected" >Select preset</option>
-                <option class="preset1" value="1" >Toad</option>
-                <option class="preset1" value="2" >Acorn </option>
-                <option class="preset1" value="3" >LWSS</option>
-               
-            </select>
-        </div>
+        <div class="all">
+            <div class="coordinates">
+                <label class="row-lable">Row</label>
+                <input type="number" id="row" value="" class="row-input">
+                <label class="column-lable">Column</label>
+                <input type="number" id="column" value="" class="column-input">
+                <button type="button" id="crd-btn" class="submit-coordinates-btn">submit coordinates</button>
+            </div>
+            <button type="button" id="simulate-button" class="simulate-btn">Simulate</button>
+            <button type="button" id="clear-button" class="clear-btn">Clear</button>
+            <div class="animate-div">
+                <label for="animate" class="animate-txt">Animate</label>
+                <input type="checkbox" id="animate" class="checkbox" type="checkbox" value="1" autocomplete="off">
+            </div>
+            <div class="presets">
+                <button type="button" class="presetsBtn" id="drawPreset-button">Draw preset</button>
+                <select class="presets-content" id="select">
+                    <option class="preset1" value="0"  selected="selected" >Select preset</option>
+                    <option class="preset1" value="1" >Toad</option>
+                    <option class="preset1" value="2" >Acorn </option>
+                    <option class="preset1" value="3" >LWSS</option>
+                
+                </select>
+                <span id = "coordinates" class="coordinates-txt"></span>
+            </div>
+        </div>    
     </form>
-
-    <p>
-        <span id = "mouse-x"></span>
-        <span id = "mouse-y"></span>
-    </p>
+    <span id = "mouse-x"></span>
+    <span id = "mouse-y"></span>
+    
 
     <canvas id="canvas"></canvas>
     
