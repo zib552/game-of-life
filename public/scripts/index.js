@@ -2,36 +2,46 @@ import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates
 
 let currentFrame
 let nextFrame
-const context = canvas.getContext('2d')
+let canvas
+let context
+let spanMouseX
+let spanMouseY
+let checkedVal
+let checkedEl
+let animate
+let animateBtn
+let state = 0
 const cellSize = 8
 const topOffset = 96
 const leftOffset = 24
-const crdOffset = 1
+let point2
 window.addEventListener('DOMContentLoaded', init)
 window.addEventListener('resize', callResize)
 function init () {
   console.log('INIT')
-  const crdBtn = document.getElementById('crd-btn')
-  crdBtn.addEventListener('click', getCoordinates)
+  animateBtn = document.getElementById('animate-btn')
+  animateBtn.addEventListener('click', ChangeAnimateBtn)
+  checkedEl = document.getElementById('animate')
+  spanMouseY = document.getElementById('mouse-y')
+  spanMouseX = document.getElementById('mouse-x')
+  canvas = document.getElementById('canvas')
+  context = canvas.getContext('2d')
   const simulateBtn = document.getElementById('simulate-button')
   simulateBtn.addEventListener('click', simulate)
   const clearBtn1 = document.getElementById('clear-button')
   clearBtn1.addEventListener('click', clear)
   const drawPresetBtn = document.getElementById('drawPreset-button')
   drawPresetBtn.addEventListener('click', drawPreset)
-  const animateBtn = document.getElementById('animate')
-  animateBtn.addEventListener('click', animate)
+  animate = document.getElementById('animate')
+  animate.addEventListener('click', animateFunc)
   document.getElementById('body').addEventListener('click', handleMouseClick)
   callResize()
 }
 function handleMouseClick (event) {
-  const spanMouseX = document.getElementById('mouse-x')
-  const spanMouseY = document.getElementById('mouse-y')
-  const canvas = document.getElementById('canvas')
   const boundingRect = canvas.getBoundingClientRect()
   const point = calcClickCoordinates(event.clientX, event.clientY, boundingRect.left, boundingRect.top, boundingRect.right, boundingRect.bottom)
   if (point) {
-    const point2 = calcCellCoordinates(point.x, point.y, cellSize)
+    point2 = calcCellCoordinates(point.x, point.y, cellSize)
     if (currentFrame[point2.y][point2.x] === 0) {
       currentFrame[point2.y][point2.x] = 1
     } else {
@@ -62,7 +72,7 @@ function simulate () {
 }
 
 function drawPreset () {
-  const crd = getCoordinates()
+  const crd = point2
   const value = getPreset()
   const numValue = parseInt(value)
   const adjustedSize = calcAdjustedSize()
@@ -81,11 +91,11 @@ function drawPreset () {
   }
 
   if (currentFrame === undefined) {
-    alert('you must draw a grid')
+    window.alert('you must draw a grid')
   } else if (numValue === 0) {
-    alert('You must select a preset')
+    window.alert('You must select a preset')
   } else if (currentFrame.length < 17) {
-    alert('Grid is too small. The minimum size is 17x17')
+    window.alert('Grid is too small. The minimum size is 17x17')
   }
 }
 
@@ -99,13 +109,23 @@ function clear () {
   nextFrame = makeMatrix(rows, cols)
   draw(currentFrame, context, cellSize)
 }
-function animate () {
-  const checkedVal = document.getElementById('animate').checked
+function animateFunc () {
+  checkedVal = checkedEl.checked
   if (checkedVal === true) {
     setTimeout(function () { simulate() }, 50)
-    setTimeout(function () { animate() }, 50)
+    setTimeout(function () { animateFunc() }, 50)
   } else {
     console.log('NOT ANIMATING')
+  }
+}
+
+function ChangeAnimateBtn () {
+  if (state === 0) {
+    animateBtn.innerHTML = 'Animate &#x23F8'
+    state = 1
+  } else {
+    animateBtn.innerHTML = 'Animate &#9658'
+    state = 0
   }
 }
 
@@ -129,26 +149,4 @@ function callResize () {
   nextFrame = makeMatrix(adjustedArr.arrH, adjustedArr.arrW)
 
   drawBoard(adjustedSize.w, adjustedSize.h, context, cellSize)
-}
-
-function getCoordinates () {
-  const coordinates = document.getElementById('coordinates')
-  const adjustedSize = calcAdjustedSize()
-  const rowCrd = document.getElementById('row').value
-  const colCrd = document.getElementById('column').value
-
-  const prsdRowCrd = parseInt(rowCrd)
-  const prsdColCrd = parseInt(colCrd)
-
-  const rows = (adjustedSize.h / cellSize) - crdOffset
-  const cols = (adjustedSize.w / cellSize) - crdOffset
-  if (isNaN(prsdRowCrd) || isNaN(prsdColCrd)) {
-    coordinates.innerHTML = 'You must submit coordinates to draw a preset'
-  } else if (prsdRowCrd > rows || prsdColCrd > cols) {
-    alert('Coordinates too big, the max row coordinate is ' + rows + ' and the max column coordinate is ' + cols)
-  } else {
-    coordinates.innerHTML = 'Current preset coordinates: row ' + prsdRowCrd + ' column ' + prsdColCrd
-  }
-  const crd = { row: prsdRowCrd, col: prsdColCrd }
-  return crd
 }

@@ -209,40 +209,44 @@ function draw (currentFrame, context, cellSize) {
     }
   }
 }
+function any () {
+  let array = [[0, 1, 1, 1],
+    [1, 1, 1, 0]]
+}
 
 function drawToad (currentFrame, context, cellSize, crd, rows, cols) {
-  let rowOffset = crd.row
-  let colOffset = crd.col
+  let rowOffset = crd.y
+  let colOffset = crd.x
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row
-  colOffset = crd.col + 1
+  rowOffset = crd.y
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row
-  colOffset = crd.col + 1
+  rowOffset = crd.y
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset + 1] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col
+  rowOffset = crd.y + 1
+  colOffset = crd.x
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col - 1
+  rowOffset = crd.y + 1
+  colOffset = crd.x - 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col + 1
+  rowOffset = crd.y + 1
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
@@ -251,44 +255,44 @@ function drawToad (currentFrame, context, cellSize, crd, rows, cols) {
 }
 
 function drawAcorn (currentFrame, context, cellSize, crd, rows, cols) {
-  let rowOffset = crd.row
-  let colOffset = crd.col
+  let rowOffset = crd.y
+  let colOffset = crd.x
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row - 1
-  colOffset = crd.col - 2
+  rowOffset = crd.y - 1
+  colOffset = crd.x - 2
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col - 3
+  rowOffset = crd.y + 1
+  colOffset = crd.x - 3
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col - 2
+  rowOffset = crd.y + 1
+  colOffset = crd.x - 2
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col + 1
+  rowOffset = crd.y + 1
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col + 2
+  rowOffset = crd.y + 1
+  colOffset = crd.x + 2
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col + 3
+  rowOffset = crd.y + 1
+  colOffset = crd.x + 3
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
@@ -297,56 +301,56 @@ function drawAcorn (currentFrame, context, cellSize, crd, rows, cols) {
 }
 
 function drawLWSS (currentFrame, context, cellSize, crd, rows, cols) {
-  let rowOffset = crd.row
-  let colOffset = crd.col
+  let rowOffset = crd.y
+  let colOffset = crd.x
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row
-  colOffset = crd.col - 3
+  rowOffset = crd.y
+  colOffset = crd.x - 3
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 1
-  colOffset = crd.col + 1
+  rowOffset = crd.y + 1
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 2
-  colOffset = crd.col - 3
+  rowOffset = crd.y + 2
+  colOffset = crd.x - 3
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 2
-  colOffset = crd.col + 1
+  rowOffset = crd.y + 2
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 3
-  colOffset = crd.col - 2
+  rowOffset = crd.y + 3
+  colOffset = crd.x - 2
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 3
-  colOffset = crd.col - 1
+  rowOffset = crd.y + 3
+  colOffset = crd.x - 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 3
-  colOffset = crd.col
+  rowOffset = crd.y + 3
+  colOffset = crd.x
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
 
-  rowOffset = crd.row + 3
-  colOffset = crd.col + 1
+  rowOffset = crd.y + 3
+  colOffset = crd.x + 1
   rowOffset = reindexI(rowOffset, rows)
   colOffset = reindexJ(colOffset, cols)
   currentFrame[rowOffset][colOffset] = 1
