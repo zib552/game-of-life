@@ -1,4 +1,4 @@
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, drawToad, drawAcorn, drawLWSS, resize } from './engine.js'
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, resize } from './engine.js'
 
 let currentFrame
 let nextFrame
@@ -72,30 +72,39 @@ function simulate () {
 }
 
 function drawPreset () {
-  const crd = point2
   const value = getPreset()
   const numValue = parseInt(value)
-  const adjustedSize = calcAdjustedSize()
+  let preset
 
-  const rows = adjustedSize.h / cellSize
-  const cols = adjustedSize.w / cellSize
-
-  if (numValue === 1 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    drawToad(currentFrame, context, cellSize, crd, rows, cols)
+  if (numValue === 1) {
+    preset = [
+      [0, 1, 1, 1],
+      [1, 1, 1, 0]
+    ]
   }
   if (numValue === 2 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    drawAcorn(currentFrame, context, cellSize, crd, rows, cols)
+    preset = [
+      [0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 1, 0, 0, 0],
+      [1, 1, 0, 0, 1, 1, 1]
+    ]
   }
   if (numValue === 3 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    drawLWSS(currentFrame, context, cellSize, crd, rows, cols)
+    preset = [
+      [1, 0, 0, 1, 0],
+      [0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 1],
+      [0, 1, 1, 1, 1]
+    ]
   }
 
-  if (currentFrame === undefined) {
-    window.alert('you must draw a grid')
-  } else if (numValue === 0) {
+  if (numValue === 0) {
     window.alert('You must select a preset')
-  } else if (currentFrame.length < 17) {
-    window.alert('Grid is too small. The minimum size is 17x17')
+  }
+  if (point2 === undefined) {
+    window.alert('Click on the grid')
+  } else {
+    insertPreset(currentFrame, preset, point2, context, cellSize)
   }
 }
 
@@ -149,4 +158,21 @@ function callResize () {
   nextFrame = makeMatrix(adjustedArr.arrH, adjustedArr.arrW)
 
   drawBoard(adjustedSize.w, adjustedSize.h, context, cellSize)
+}
+
+function insertPreset (currentFrame, preset, point2, context) {
+  let destRow
+  let destCol
+
+  let presetRow = 0
+  let presetCol = 0
+  for (destRow = point2.y; destRow < point2.y + preset.length; ++destRow) {
+    for (destCol = point2.x; destCol < point2.x + preset[0].length; ++destCol) {
+      currentFrame[destRow][destCol] = preset[presetRow][presetCol]
+      presetCol++
+    }
+    presetRow++
+    presetCol = 0
+  }
+  draw(currentFrame, context, cellSize)
 }
