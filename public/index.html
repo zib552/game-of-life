@@ -8,33 +8,26 @@
  </head>
 <body id="body">
     <form>
-        <label>Columns</label><br>
-        <input type="text" id="columns" value=""><br>
-        <label>Rows</label><br>
-        <input type="text" id="rows" value=""><br><br>
-        <button type="button" id="submit-button">Submit</button>
-        <button type="button" id="simulate-button">Simulate</button>
-        <button type="button" id="clear-button">Clear</button>
-        <label for="animate" class="animateLabel">Animate
-            <input type="checkbox" id="animate" class="checkbox" type="checkbox" value="1" autocomplete="off">
-            <span class="checkbox"></span>
-        </label>
-        <div class="presets">
-            <button type="button" class="presetsBtn" id="drawPreset-button">Draw preset</button>
-            <select class="presets-content" id="select">
+        <div class="all mb">
+            <button type="button" id="simulate-button" class="simulate-btn mr-sm">Simulate</button>
+            <div class="animate-div mr-sm">
+                <label for="animate" class="animate-txt" id="animate-btn">Animate &#9658</label>
+                <input type="checkbox" id="animate" class="checkbox mr" type="checkbox" value="1" autocomplete="off">
+            </div>
+            <button type="button" id="clear-button" class="clear-btn mr-sm ml-sm">Clear</button>
+            <select class="presets-content mr-sm" id="select">
                 <option class="preset1" value="0"  selected="selected" >Select preset</option>
                 <option class="preset1" value="1" >Toad</option>
                 <option class="preset1" value="2" >Acorn </option>
                 <option class="preset1" value="3" >LWSS</option>
-               
             </select>
-        </div>
+            <button type="button" class="presetsBtn mr-sm ml-sm" id="drawPreset-button">Draw preset</button>
+            <span id = "mouse-x" class="mr-sm mouse-crd-txt"></span>
+            <span id = "mouse-y" class="mouse-crd-txt"></span>
+        </div>    
     </form>
-
-    <p>
-        <span id = "mouse-x"></span>
-        <span id = "mouse-y"></span>
-    </p>
+    
+    
 
     <canvas id="canvas"></canvas>
     

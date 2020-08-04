@@ -1,89 +1,79 @@
-.presetsBtn {
-    background-color: #e1e1e1;
-    color: black;
-    padding: 1px 3px;
-    font-size: 13px;
-    border:  #adadad;
-    border-width: 1px;
-    border-style: solid;
-    margin-left: 1px;
-}    
-.presets {
-    position: relative;
-    display: inline-block;
+.mr-sm{
+    margin-right: 0.5em;
 }
+
+.mr-md{
+    margin-right: 1em;
+}
+
+.mr-lg{
+    margin-right: 2em;
+}
+
+.mb{
+    margin-bottom: 1em;
+}
+
+.ml-sm{
+    margin-left: 0.5em;
+}
+
+.input-sm{
+    width: 3em;
+}
+
 .presets-content{
+    flex-shrink: 0;
     background-color: #e1e1e1;
     border: #adadad;
     border-style: solid;
     border-width: 1px;
 }
-.preset1{
-    position: relative;
-    display: block;
-    width: 50px;
-    height: 10px;
-    padding-top: 5px;
-    border: #adadad;
-    background-color: #e1e1e1;
-    border-style: solid;
-    border-width: 1px;
-    border-top: none;
-    text-align: center;
-}
-.animateLabel{
-    position: relative;
+.animate-div {
     display: inline-flex;
-    height: 17px;
-    width: 72px;
+    justify-content: center;
+    align-items: center;
     background-color: #e1e1e1;
+    margin: 0 auto;
     border: #adadad;
     border-style: solid;
     border-width: 1px;
-    padding-top: 1px;
-    padding-left: 2px;
-    font-size: 15px;
-    font-weight: lighter;
-    font-family: 'Times New Roman', Times, serif;
-}
-.checkbox{
-    background-color: white;
-    position: relative;
-    top: 0;
-    left: 2;
-    height: 14px;
-    width: 14px;
-    margin-left: 4px;
-    margin-top: 1px;
-}
-.animateLabel input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+    font-size: 13px;
+    font-family: Arial;
+    height: 18px;
+    width: 70px;
+    flex-shrink: 0;
 }
 
-.checkbox:after {
-    content: "X";
-    font-weight: bold;
-    font-size: 19px;
-    position: relative;
+.presetsBtn {
+    flex-shrink: 0;
+}
+
+.checkbox {
     display: none;
-    left: 1px;
-    bottom: 7px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 55px;
 }
-.animateLabel input:checked ~ .checkbox:after {
-    display: inline;
-  }
 
-.canvas {
-    background:  #ffffff;
+.presets-content {
+    flex-shrink: 0;
+    margin: 0 auto;
 }
-.presetsBtn:hover {background-color: #e5f1fb; border-color: #0078d7;}
-.presets-content:focus .preset1{display: block;}
-.preset1:hover {background-color: #e5f1fb; border-color: #0078d7;}
-.preset2:hover {background-color: #e5f1fb; border-color: #0078d7;}
 
+.submit-coordinates-btn {
+    flex-shrink: 0;
+}
+
+.coordinates-txt {
+    flex-shrink: 0;
+}
+
+.mouse-crd-txt {
+    flex-shrink: 0;
+}
+
+.all {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
   
