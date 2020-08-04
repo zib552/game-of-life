@@ -208,7 +208,6 @@ function draw (currentFrame, context, cellSize) {
       }
     }
   }
-  console.log('DRAW')
 }
 
 function resize (adjustedSize, cellSize) {
@@ -218,4 +217,21 @@ function resize (adjustedSize, cellSize) {
   return adjustedArr
 }
 
-export { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, reindexJ, reindexI, resize }
+function insertPreset (currentFrame, preset, curPos, context, cellSz) {
+  let destRow
+  let destCol
+
+  let presetRow = 0
+  let presetCol = 0
+  for (destRow = curPos.y; destRow < curPos.y + preset.length; ++destRow) {
+    for (destCol = curPos.x; destCol < curPos.x + preset[0].length; ++destCol) {
+      currentFrame[destRow][destCol] = preset[presetRow][presetCol]
+      presetCol++
+    }
+    presetRow++
+    presetCol = 0
+  }
+  draw(currentFrame, context, cellSz)
+}
+
+export { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, reindexJ, reindexI, resize, insertPreset }

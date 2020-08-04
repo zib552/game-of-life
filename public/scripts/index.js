@@ -1,4 +1,4 @@
-import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, resize } from './engine.js'
+import { calcNewCellState, makeMatrix, calcCellCoordinates, calcClickCoordinates, getIntermediateFrame, drawBoard, getPreset, draw, resize, insertPreset } from './engine.js'
 
 let currentFrame
 let nextFrame
@@ -15,6 +15,23 @@ const cellSize = 8
 const topOffset = 96
 const leftOffset = 24
 let point2
+const toad = [
+  [0, 1, 1, 1],
+  [1, 1, 1, 0]
+]
+
+const acorn = [
+  [0, 1, 0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0, 0, 0],
+  [1, 1, 0, 0, 1, 1, 1]
+]
+
+const LWSS = [
+  [1, 0, 0, 1, 0],
+  [0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 1],
+  [0, 1, 1, 1, 1]
+]
 window.addEventListener('DOMContentLoaded', init)
 window.addEventListener('resize', callResize)
 function init () {
@@ -74,28 +91,17 @@ function simulate () {
 function drawPreset () {
   const value = getPreset()
   const numValue = parseInt(value)
+  const cellSz = cellSize
   let preset
 
   if (numValue === 1) {
-    preset = [
-      [0, 1, 1, 1],
-      [1, 1, 1, 0]
-    ]
+    preset = toad
   }
   if (numValue === 2 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    preset = [
-      [0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0],
-      [1, 1, 0, 0, 1, 1, 1]
-    ]
+    preset = acorn
   }
   if (numValue === 3 && currentFrame.length >= 17 && currentFrame[16][16] !== undefined) {
-    preset = [
-      [1, 0, 0, 1, 0],
-      [0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 1],
-      [0, 1, 1, 1, 1]
-    ]
+    preset = LWSS
   }
 
   if (numValue === 0) {
@@ -104,7 +110,7 @@ function drawPreset () {
   if (point2 === undefined) {
     window.alert('Click on the grid')
   } else {
-    insertPreset(currentFrame, preset, point2, context, cellSize)
+    insertPreset(currentFrame, preset, point2, context, cellSz)
   }
 }
 
@@ -158,21 +164,4 @@ function callResize () {
   nextFrame = makeMatrix(adjustedArr.arrH, adjustedArr.arrW)
 
   drawBoard(adjustedSize.w, adjustedSize.h, context, cellSize)
-}
-
-function insertPreset (currentFrame, preset, point2, context) {
-  let destRow
-  let destCol
-
-  let presetRow = 0
-  let presetCol = 0
-  for (destRow = point2.y; destRow < point2.y + preset.length; ++destRow) {
-    for (destCol = point2.x; destCol < point2.x + preset[0].length; ++destCol) {
-      currentFrame[destRow][destCol] = preset[presetRow][presetCol]
-      presetCol++
-    }
-    presetRow++
-    presetCol = 0
-  }
-  draw(currentFrame, context, cellSize)
 }
