@@ -15,6 +15,7 @@ const cellSize = 8
 const topOffset = 96
 const leftOffset = 24
 let point2
+
 const toad = [
   [0, 1, 1, 1],
   [1, 1, 1, 0]
